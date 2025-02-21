@@ -1,7 +1,13 @@
 #lang scheme
 
 (define (fast-exp-mod x y p)
-  'your-code-here)
+  (if (= y 0)
+    (modulo 1 p)
+    (if (= y 1)
+      (modulo x p)
+      (if (even? y)
+        (modulo (fast-exp-mod (modulo (* x x) p) (/ y 2) p) p)
+        (modulo (* x (fast-exp-mod (modulo (* x x) p) (/ (- y 1) 2) p)) p)))))
 
 ; Tests
 
