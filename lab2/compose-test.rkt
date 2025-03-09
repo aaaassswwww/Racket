@@ -5,32 +5,32 @@
 
 (define add2 (lambda (x) (+ x 2)))
 (define mul5 (lambda (x) (* x 5)))
-(define add2-then-mul5 (compose mul5 add2))
-(define mul5-then-add2 (compose add2 mul5))
+(define add2-then-mul5 (my-compose mul5 add2))
+(define mul5-then-add2 (my-compose add2 mul5))
 
 (define add1 (lambda (x) (+ x 1)))
 (define sub3 (lambda (x) (- x 3)))
 (define mul3 (lambda (x) (* x 3)))
 (define square (lambda (x) (* x x)))
 
-(define add1-then-mul3 (compose mul3 add1))
-(define sub3-then-square (compose square sub3))
-(define square-then-sub3 (compose sub3 square))
+(define add1-then-mul3 (my-compose mul3 add1))
+(define sub3-then-square (my-compose square sub3))
+(define square-then-sub3 (my-compose sub3 square))
 
 (define double (lambda (x) (* x 2)))
-(define zero-check (compose double double))
+(define zero-check (my-compose double double))
 
 (define add10 (lambda (x) (+ x 10)))
 (define mul-neg2 (lambda (x) (* x -2)))
-(define add10-then-mul-neg2 (compose mul-neg2 add10))
+(define add10-then-mul-neg2 (my-compose mul-neg2 add10))
 
 (define stringify (lambda (x) (number->string x)))
 (define add-excl (lambda (s) (string-append s "!")))
-(define process-num (compose add-excl stringify))
+(define process-num (my-compose add-excl stringify))
 
 (define is-even? (lambda (x) (= (modulo x 2) 0)))
 (define logical-not (lambda (b) (not b)))
-(define check-odd (compose logical-not is-even?))
+(define check-odd (my-compose logical-not is-even?))
 
 (define ctx (make-test-context))
 
