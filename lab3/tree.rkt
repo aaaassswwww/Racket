@@ -25,24 +25,39 @@
 
 ; fold-tree :: (a tree, (a, b list) -> b) -> b
 (define (fold-tree tree f)
-  'todo)
+  (define (fold f)
+    (lambda (x) 
+      (fold-tree x f)))
+  (f (car tree) (map (fold f) (cdr tree))))
 
 ; sum-tree :: Number tree -> Number
 (define (sum-tree tree)
   (define (f x ys)
-    'todo)
+    (if (null? ys)
+      x
+      (foldr + x ys)))
   (fold-tree tree f))
 
 ; dfs :: a tree -> a list
 (define (dfs tree)
   (define (f x ys)
-    'todo)
+    (if (null? ys)
+      (list x)
+      (cons x (foldr append '() ys))))
   (fold-tree tree f))
+
 
 ; height :: a tree -> Number
 (define (height tree)
   (define (f x ys)
-    'todo)
+    (if (null? ys)
+      1
+      (+ (foldr 
+            (lambda (a b) 
+              (if (> a b) a b))
+            0
+            ys) 
+          1)))
   (fold-tree tree f))
 
 (provide tree-1)
