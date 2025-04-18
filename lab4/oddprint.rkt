@@ -16,7 +16,14 @@
 ; (oddprint '(1 2 3)) => "oh"
 (define (oddprint l)
   (match l
-    ; todo
+    ['() "empty"]
+    ['(7) "one-lucky"]
+    [(list _) "one"]
+    [(list _ (list 7 _ ...)) "two-lucky"]
+    [(list _ _) "two"]
+    [(? (lambda (x) (and (= (length x) 3) (member 4 x)))) "three-unlucky"]
+    [_ "oh"]
     ))
+
 
 (provide oddprint)

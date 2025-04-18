@@ -23,7 +23,16 @@
 ;                                 (b-expr 2 'Mul (u-expr 'Neg 4))))) => (-((1+3)-(2*(-4)))) => -12
 (define (calculate expr)
   (match expr
-    ; todo
+    [(? number? x) x]
+    [(b-expr lhs op rhs) ((judge-op op) (calculate lhs) (calculate rhs))]
+    [(u-expr op oprand) (- (calculate oprand))]
     [_ (error "unknow expression ~a" expr)]))
+
+(define (judge-op op)
+  (match op
+    ['Sub (lambda (lhs rhs) (- lhs rhs))]
+    ['Add (lambda (lhs rhs) (+ lhs rhs))]
+    ['Mul (lambda (lhs rhs) (* lhs rhs))]))
+
 
 (provide calculate u-expr b-expr)
