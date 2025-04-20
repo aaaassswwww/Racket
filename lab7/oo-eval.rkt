@@ -98,8 +98,6 @@
 ;;
 
 (define (oo-eval exp env)
-  ;; (display exp)
-  ;; (display "  ")
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
         ((quoted? exp) (text-of-quotation exp))
@@ -429,6 +427,7 @@
 
         (list 'run-file run-file)
         (list 'apply oo-apply)
+        (list 'new make-instance)
 
         ))
 
@@ -564,8 +563,14 @@
 
 ;; oo-eval should call this to handle the make-class special form
 (define (eval-make-class exp env)  ;; PROBLEM 2
-  ;; (display (make-class-methods exp))
-  (create-class (make-class-name exp) (make-class-parent exp) (make-class-slots exp) (make-class-methods exp)))
+    (create-class (oo-eval (make-class-name exp) env)
+                  (oo-eval (make-class-parent exp) env)
+                  (make-class-slots exp)
+                  (eval-lambda-methods (make-class-methods exp) env)))
+    
+
+(define (eval-lambda-methods methods env)
+  (map (lambda (method) (list (car method) (oo-eval (cadr method) env))) methods))
 
 
 (define (oo-apply-instance instance arguments)
