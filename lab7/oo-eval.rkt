@@ -98,6 +98,8 @@
 ;;
 
 (define (oo-eval exp env)
+  ;; (display exp)
+  ;; (display "  ")
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
         ((quoted? exp) (text-of-quotation exp))
@@ -111,6 +113,7 @@
         ((let? exp) (oo-eval (let->application exp) env))
         ((and? exp) (eval-and exp env))
         ((or? exp) (eval-or exp env))
+        ((make-class? exp) (eval-make-class (operands exp) env))
         ((application? exp)
          (oo-apply (oo-eval (operator exp) env)
                 (list-of-values (operands exp) env)))
@@ -498,8 +501,19 @@
   (read-slot class ':name))
 
 (define (create-class name parent-class slots methods)
-  'BRAINSBRAINSBRAINSBRAINS) ;; PROBLEM 1
+  (make-instance default-metaclass name parent-class slots methods)) ;; PROBLEM 1
 
+(define (make-class? exp)
+  (tagged-list? exp 'make-class))
+(define make-class-body cdr)
+(define (make-class-name exp)
+  (first exp))
+(define (make-class-parent exp)
+  (second exp))
+(define (make-class-slots exp)
+  (third exp))
+(define (make-class-methods exp)
+  (fourth exp))
 
 ; What's the class of a class? You just met-ah!
 ; Manually create an instance representing the default-metaclass, to bootstrap
@@ -550,7 +564,8 @@
 
 ;; oo-eval should call this to handle the make-class special form
 (define (eval-make-class exp env)  ;; PROBLEM 2
-  'something-involving-create-class?)
+  ;; (display (make-class-methods exp))
+  (create-class (make-class-name exp) (make-class-parent exp) (make-class-slots exp) (make-class-methods exp)))
 
 
 (define (oo-apply-instance instance arguments)
@@ -656,6 +671,6 @@
 
 
 ;; If desired, uncomment to start up the evaluator REPL when you run this file
-;(driver-loop)
+;; (driver-loop)
 
 
