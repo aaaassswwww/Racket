@@ -1,0 +1,12 @@
+; racket fdlang-eval.rkt sample.fdlang
+
+(append "ab")   ; become "ab"
+(repeat 5)      ; become "ababababab"
+(reverse)       ; become "bababababa"
+(print)         ; show   "bababababa"
+
+(clear)         ; become ""
+(append "abc")  ; become "abc"
+(reverse)       ; become "cba"
+(append "abc")  ; become "cbaabc"
+(print)         ; show   "cbaabc"
